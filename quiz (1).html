@@ -1,0 +1,324 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Find Your Dream University</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Playfair Display', serif;
+      background-color: #f5f0e6;
+      color: #3d2e24;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 1rem;
+      overflow: hidden;
+    }
+
+    .quiz-container {
+      background-color: #fdfbf7;
+      border: 1px solid #e0d9ce;
+      padding: 2rem;
+      max-width: 600px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 6px 24px rgba(61, 46, 36, 0.1);
+      text-align: center;
+      animation: fadeUp 1.2s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    h1 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+      color: #3d2e24;
+    }
+
+    #progress {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      color: #5c4a3a;
+    }
+
+    .question {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    button.option {
+      background: #ede7dd;
+      border: 1px solid #d9cfc3;
+      padding: 0.8rem;
+      font-size: 1rem;
+      border-radius: 8px;
+      color: #3d2e24;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button.option:hover {
+      background-color: #e1d9ce;
+    }
+
+    .result {
+      font-size: 1.2rem;
+      padding-top: 1.5rem;
+      line-height: 1.6;
+      color: #3d2e24;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .retake {
+      margin-top: 2rem;
+      background-color: #e7dfd4;
+      border: 1px solid #cfc4b5;
+      padding: 0.8rem 1.2rem;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      color: #3d2e24;
+    }
+
+    .retake:hover {
+      background-color: #d9cfc2;
+    }
+
+    /* Question fade-in */
+    .fade-slide {
+      opacity: 0;
+      transform: translateY(12px);
+      animation: fadeSlideIn 0.6s ease forwards;
+    }
+
+    @keyframes fadeSlideIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Floating petals */
+    .petal {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: radial-gradient(circle, #dfcdb5 30%, transparent 70%);
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: floatPetals 12s infinite ease-in-out;
+      pointer-events: none;
+    }
+
+    @keyframes floatPetals {
+      0% {
+        transform: translateY(-10vh) translateX(0);
+        opacity: 0;
+      }
+      20% {
+        opacity: 0.7;
+      }
+      100% {
+        transform: translateY(120vh) translateX(20vw);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="https://cdn.pixabay.com/audio/2022/10/31/audio_84ec645e18.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="quiz-container">
+    <h1>Find Your Dream University</h1>
+    <div id="progress"></div>
+    <div id="quiz"></div>
+    <div class="result hidden" id="result"></div>
+    <button class="retake hidden" onclick="restartQuiz()">Retake Quiz</button>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "What calls you forward in your future?",
+        options: ["Justice and changing lives", "Building something visionary", "Healing and human connection", "Designing the spaces we live in", "Creating beauty that speaks", "Solving the world's toughest puzzles"],
+        mapping: ["Law", "Business", "Medicine", "Architecture", "Design", "Engineering"]
+      },
+      {
+        question: "Which atmosphere fuels your mind?",
+        options: ["Timeless halls and tradition", "Innovation with global energy", "Calm, focused, and intentional", "Open studios and creative energy", "Artistic chaos with meaning", "Quiet tech labs and logic-driven space"],
+        mapping: ["Law", "Business", "Medicine", "Architecture", "Design", "Engineering"]
+      },
+      {
+        question: "Which setting would you call home?",
+        options: ["Ivy-draped courtyards", "A skyline full of opportunity", "Hospitals and places of calm service", "Museums, models, and bold structures", "Cafés and sketchbooks", "Code, hardware, and minimalist desks"],
+        mapping: ["Law", "Business", "Medicine", "Architecture", "Design", "Engineering"]
+      },
+      {
+        question: "Your ideal collaborators are...",
+        options: ["Deep thinkers, driven by purpose", "Diverse minds chasing the next big thing", "Grounded, empathetic individuals", "Curious creators and tinkerers", "Dreamers with ink on their fingers", "Quiet geniuses building something brilliant"],
+        mapping: ["Law", "Business", "Medicine", "Architecture", "Design", "Engineering"]
+      },
+      {
+        question: "Which role do you see yourself stepping into?",
+        options: ["Advocate for justice", "Visionary leader", "Compassionate doctor or researcher", "Architect of new realities", "Creative director or artist", "Inventor, developer, or data scientist"],
+        mapping: ["Law", "Business", "Medicine", "Architecture", "Design", "Engineering"]
+      },
+      {
+        question: "How do you respond to pressure?",
+        options: ["Reflect and stay principled", "Rise and organize", "Care deeply and act", "Tinker until it clicks", "Pour it into your art", "Quietly analyze and solve"],
+        mapping: ["Law", "Business", "Medicine", "Architecture", "Design", "Engineering"]
+      },
+      {
+        question: "Where would you wander to think?",
+        options: ["Oxford, UK", "New York City", "Kyoto or Singapore", "Milan or Copenhagen", "Paris, Florence, or Berlin", "Tokyo or San Francisco"],
+        mapping: ["Law", "Business", "Medicine", "Architecture", "Design", "Engineering"]
+      },
+      {
+        question: "What legacy would you be proud to leave?",
+        options: ["Changing minds and systems", "Creating opportunities for others", "Healing lives and easing pain", "Reshaping the way we live", "Inspiring wonder", "Solving problems future generations don’t yet know they have"],
+        mapping: ["Law", "Business", "Medicine", "Architecture", "Design", "Engineering"]
+      }
+    ];
+
+    let currentQuestion = 0;
+    const scores = { Law: 0, Business: 0, Medicine: 0, Architecture: 0, Design: 0, Engineering: 0 };
+
+    const quizContainer = document.getElementById('quiz');
+    const resultContainer = document.getElementById('result');
+    const retakeButton = document.querySelector('.retake');
+    const progress = document.getElementById('progress');
+
+    function showQuestion() {
+      const q = questions[currentQuestion];
+      progress.textContent = `Question ${currentQuestion + 1} of ${questions.length}`;
+      quizContainer.innerHTML = `
+        <div class="fade-slide">
+          <div class="question">${q.question}</div>
+          <div class="options">
+            ${q.options.map((opt, i) => `<button class="option" onclick="selectOption(${i})">${opt}</button>`).join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    function selectOption(index) {
+      const selectedField = questions[currentQuestion].mapping[index];
+      scores[selectedField]++;
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        showQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      quizContainer.classList.add("hidden");
+      retakeButton.classList.remove("hidden");
+      const topField = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+
+      const fieldDescriptions = {
+        Law: {
+          description: "You are driven by ethics, equity, and strong belief systems.",
+          universities: ["Oxford", "Yale", "NLU Delhi", "Harvard Law School"],
+          careerPath: "You could become a lawyer, judge, or policy maker, shaping laws and advocating for justice."
+        },
+        Business: {
+          description: "You thrive on innovation, leadership, and ambition.",
+          universities: ["Stanford", "Wharton", "London Business School", "Harvard Business School"],
+          careerPath: "Leadership roles in corporations, entrepreneurship, or finance could be your future."
+        },
+        Medicine: {
+          description: "You are empathetic and focused on healing.",
+          universities: ["Johns Hopkins", "AIIMS", "Cambridge", "Harvard Medical School"],
+          careerPath: "You could become a doctor, researcher, or healthcare innovator, saving lives and improving health worldwide."
+        },
+        Architecture: {
+          description: "You envision and create living environments.",
+          universities: ["ETH Zurich", "MIT", "Politecnico di Milano", "Harvard Graduate School of Design"],
+          careerPath: "An architect, urban planner, or designer, shaping the spaces we live in and use every day."
+        },
+        Design: {
+          description: "You express through form, color, and emotion.",
+          universities: ["RISD", "Central Saint Martins", "Aalto", "Pratt Institute"],
+          careerPath: "As a designer, you could work in fashion, graphic design, product design, or even digital arts."
+        },
+        Engineering: {
+          description: "You love logic, challenge, and creation.",
+          universities: ["MIT", "Berkeley", "Tsinghua", "Stanford Engineering"],
+          careerPath: "You could become a software developer, engineer, or researcher, solving problems with technology."
+        }
+      };
+
+      const field = fieldDescriptions[topField];
+      
+      resultContainer.innerHTML = `
+        <div class="result fade-slide">
+          <strong style="font-size: 1.5rem; color: #3d2e24;">${topField}</strong><br/>
+          <p style="font-size: 1.1rem; color: #5c4a3a;">${field.description}</p>
+          <p style="font-size: 1rem; color: #5c4a3a;">You could consider these universities:</p>
+          <ul style="text-align: left; margin-left: 2rem; font-size: 1rem;">
+            ${field.universities.map(uni => `<li>${uni}</li>`).join("")}
+          </ul>
+          <p style="font-size: 1rem; color: #5c4a3a;">Career paths could include:</p>
+          <p style="font-size: 1rem; color: #5c4a3a;">${field.careerPath}</p>
+        </div>
+      `;
+      resultContainer.classList.remove("hidden");
+    }
+
+    function restartQuiz() {
+      currentQuestion = 0;
+      for (let key in scores) scores[key] = 0;
+      quizContainer.classList.remove("hidden");
+      resultContainer.classList.add("hidden");
+      retakeButton.classList.add("hidden");
+      showQuestion();
+    }
+
+    // Petals animation
+    const totalPetals = 20;
+    for (let i = 0; i < totalPetals; i++) {
+      const petal = document.createElement('div');
+      petal.className = 'petal';
+      petal.style.left = Math.random() * 100 + 'vw';
+      petal.style.animationDelay = `${Math.random() * 10}s`;
+      petal.style.animationDuration = `${10 + Math.random() * 10}s`;
+      document.body.appendChild(petal);
+    }
+
+    showQuestion();
+  </script>
+</body>
+</html>
+
