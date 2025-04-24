@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Unify</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display&family=Lato&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Lato', sans-serif;
+    }
+
+    body {
+      background-color: #f9f7f0;
+      color: #333;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    body.dark-mode {
+      background-color: #2e2e2e;
+      color: #8B4513;
+    }
+
+    header {
+      background-color: #fff;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    header.dark-mode {
+      background-color: #3c3c3c;
+    }
+
+    header .logo h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.5rem;
+      color: #4a4a4a;
+    }
+
+    header.dark-mode .logo h1 {
+      color: #8B4513;
+    }
+
+    .dark-mode-toggle {
+      position: relative;
+      width: 60px;
+      height: 30px;
+      background-color: #ccc;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+
+    .dark-mode-toggle .toggle-icon {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 24px;
+      height: 24px;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+
+    body.dark-mode .dark-mode-toggle {
+      background-color: #8B4513;
+    }
+
+    body.dark-mode .dark-mode-toggle .toggle-icon {
+      transform: translateX(30px);
+    }
+
+    .hero {
+      background-image: url('https://via.placeholder.com/1200x600');
+      background-size: cover;
+      background-position: center;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      flex-direction: column;
+    }
+
+    .hero .hero-content h2 {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .hero .hero-content p {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .cta-button {
+      background-color: #f3e6c9;
+      padding: 15px 30px;
+      border-radius: 25px;
+      text-decoration: none;
+      color: #4a4a4a;
+      font-weight: bold;
+      font-size: 1rem;
+      margin-top: 10px;
+      display: inline-block;
+    }
+
+    .cta-button:hover {
+      background-color: #e2d3a1;
+      transform: scale(1.05);
+    }
+
+    .cta-button.quiz-button {
+      background-color: #8B4513;
+      color: #fff;
+    }
+
+    .cta-button.quiz-button:hover {
+      background-color: #A0522D;
+    }
+
+    .how-it-works, .explore-universities {
+      padding: 50px 40px;
+      text-align: center;
+    }
+
+    .how-it-works h2, .explore-universities h2 {
+      font-size: 2.5rem;
+      margin-bottom: 20px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .steps {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+    }
+
+    .step {
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      width: 200px;
+    }
+
+    .step h3 {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+    }
+
+    #university-search {
+      padding: 10px;
+      font-size: 1rem;
+      width: 80%;
+      max-width: 500px;
+      border-radius: 25px;
+      border: 2px solid #e0e0e0;
+    }
+
+    .university-cards {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+
+    .university-card {
+      padding: 30px;
+      background-color: #fff;
+      border-radius: 10px;
+      width: 250px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    footer {
+      background-color: #fff;
+      padding: 30px 40px;
+      text-align: center;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    footer ul {
+      list-style-type: none;
+      margin-bottom: 20px;
+    }
+
+    footer ul li {
+      display: inline;
+      margin: 0 10px;
+    }
+
+    footer .social-icon {
+      background-color: #f3e6c9;
+      color: #4a4a4a;
+      padding: 10px;
+      border-radius: 50%;
+      margin: 0 10px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo"><h1>Unify</h1></div>
+    <div class="dark-mode-toggle" onclick="toggleDarkMode()">
+      <div class="toggle-icon"></div>
+    </div>
+  </header>
+
+  <div class="hero">
+    <div class="hero-content">
+      <h2>Your Dream University Awaits</h2>
+      <p>Find the best university that will lead you to your dream future.</p>
+      <a href="E:\unify\creambin (1) (2) (1).html" class="cta-button">Explore Now</a>
+      <br><br>
+      <a href="E:\unify\quiz (1).html" class="cta-button quiz-button" target="_blank">Take the Quiz</a>
+    </div>
+  </div>
+
+  <div class="how-it-works">
+    <h2>How It Works</h2>
+    <div class="steps">
+      <div class="step"><h3>Step 1</h3><p>Search for universities based on your field of interest.</p></div>
+      <div class="step"><h3>Step 2</h3><p>Compare options based on your goals and preferences.</p></div>
+      <div class="step"><h3>Step 3</h3><p>Apply and start your journey towards your future.</p></div>
+    </div>
+  </div>
+
+  <div class="explore-universities">
+    <h2>Explore Universities</h2>
+    <div class="university-cards">
+      <div class="university-card"><h3>Harvard University</h3><p>Location: USA</p></div>
+      <div class="university-card"><h3>University of Oxford</h3><p>Location: UK</p></div>
+      <div class="university-card"><h3>University of Toronto</h3><p>Location: Canada</p></div>
+    </div>
+  </div>
+
+  <footer>
+    <ul>
+      <li><a href="#">About</a></li>
+      <li><a href="#">Contact</a></li>
+      <li><a href="#">Terms</a></li>
+    </ul>
+    <div class="social-media">
+      <a href="#" class="social-icon">FB</a>
+      <a href="#" class="social-icon">IG</a>
+      <a href="#" class="social-icon">TW</a>
+    </div>
+  </footer>
+
+  <script>
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+
+</body>
+</html>

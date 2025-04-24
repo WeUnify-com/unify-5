@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Unify - University Search</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #fdfdfb;
+      color: #333;
+    }
+  </style>
+</head>
+<body class="font-sans">
+  <header class="p-6 bg-white flex justify-between items-center shadow-md">
+    <h1 class="text-3xl font-bold text-beige-800" style="color: #c2a280;">Unify</h1>
+    <input type="text" id="search-input" placeholder="Search universities..." class="rounded-xl px-4 py-2 bg-beige-100 text-gray-700 placeholder-gray-400 w-1/3 border border-beige-300" style="background-color: #f5f1e8; border-color: #e0d6c6;" />
+  </header>
+
+  <section class="p-6 flex justify-center space-x-4">
+    <button onclick="filterByField('Law')" class="py-2 px-4 bg-beige-100 rounded-lg hover:bg-beige-200 text-gray-700 flex items-center space-x-2">
+      <i class="fas fa-gavel"></i> <span>Law</span>
+    </button>
+    <button onclick="filterByField('Architecture')" class="py-2 px-4 bg-beige-100 rounded-lg hover:bg-beige-200 text-gray-700 flex items-center space-x-2">
+      <i class="fas fa-building"></i> <span>Architecture</span>
+    </button>
+    <button onclick="filterByField('Design')" class="py-2 px-4 bg-beige-100 rounded-lg hover:bg-beige-200 text-gray-700 flex items-center space-x-2">
+      <i class="fas fa-paint-brush"></i> <span>Design</span>
+    </button>
+    <button onclick="filterByField('Medicine')" class="py-2 px-4 bg-beige-100 rounded-lg hover:bg-beige-200 text-gray-700 flex items-center space-x-2">
+      <i class="fas fa-stethoscope"></i> <span>Medicine</span>
+    </button>
+    <button onclick="filterByField('Business')" class="py-2 px-4 bg-beige-100 rounded-lg hover:bg-beige-200 text-gray-700 flex items-center space-x-2">
+      <i class="fas fa-briefcase"></i> <span>Business</span>
+    </button>
+    <button onclick="filterByField('Engineering')" class="py-2 px-4 bg-beige-100 rounded-lg hover:bg-beige-200 text-gray-700 flex items-center space-x-2">
+      <i class="fas fa-cogs"></i> <span>Engineering</span>
+    </button>
+  </section>
+
+  <main class="p-6">
+    <h2 class="text-2xl font-semibold text-beige-700 mb-4" style="color: #b89b72;">Top Universities</h2>
+    <div id="university-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- Dynamic content inserted here -->
+    </div>
+    <div id="no-results-message" class="hidden text-xl text-red-500 text-center mt-6">
+     "Oops! We couldn't find your dream university. Try broadening your search or explore top universities in different categories. Your perfect fit might be just a click away!".
+    </div>
+  </main>
+
+  <script>
+    const universities = {
+      Law: [
+       
+  { "name": "Harvard University", "location": "Cambridge, MA, USA", "link": "https://hls.harvard.edu/" },
+  { "name": "University of Oxford", "location": "Oxford, UK", "link": "https://www.law.ox.ac.uk/" },
+  { "name": "National Law School of India University", "location": "Bangalore, India", "link": "https://www.nls.ac.in/" },
+  { "name": "Yale Law School", "location": "New Haven, CT, USA", "link": "https://law.yale.edu/" },
+  { "name": "Stanford University", "location": "Stanford, CA, USA", "link": "https://law.stanford.edu/" },
+  { "name": "London School of Economics", "location": "London, UK", "link": "https://www.lse.ac.uk/" },
+  { "name": "University of Cambridge", "location": "Cambridge, UK", "link": "https://www.law.cam.ac.uk/" },
+  { "name": "Columbia University", "location": "New York, NY, USA", "link": "https://www.law.columbia.edu/" },
+  { "name": "New York University", "location": "New York, NY, USA", "link": "https://www.law.nyu.edu/" },
+  { "name": "University of California, Berkeley", "location": "Berkeley, CA, USA", "link": "https://www.law.berkeley.edu/" },
+  { "name": "University of Chicago", "location": "Chicago, IL, USA", "link": "https://www.law.uchicago.edu/" },
+  { "name": "Georgetown University", "location": "Washington, D.C., USA", "link": "https://www.law.georgetown.edu/" },
+  { "name": "University of Melbourne", "location": "Melbourne, Australia", "link": "https://law.unimelb.edu.au/" },
+  { "name": "McGill University", "location": "Montreal, Canada", "link": "https://www.mcgill.ca/law/" },
+  { "name": "University of Toronto", "location": "Toronto, Canada", "link": "https://www.law.utoronto.ca/" },
+  { "name": "King’s College London", "location": "London, UK", "link": "https://www.kcl.ac.uk/law" },
+  { "name": "University of Sydney", "location": "Sydney, Australia", "link": "https://www.sydney.edu.au/law/" },
+  { "name": "Université Paris 1 Panthéon-Sorbonne", "location": "Paris, France", "link": "https://www.pantheonsorbonne.fr/en/" },
+  { "name": "Peking University", "location": "Beijing, China", "link": "https://www.law.pku.edu.cn/" },
+  { "name": "NALSAR University of Law", "location": "Hyderabad, India", "link": "https://www.nalsar.ac.in/" },
+  { "name": "Gujarat National Law University", "location": "Gandhinagar, India", "link": "https://www.gnlu.ac.in/" },
+  { "name": "National Law University Delhi", "location": "Delhi, India", "link": "https://www.nludelhi.ac.in/" },
+  { "name": "Symbiosis Law School", "location": "Pune, India", "link": "https://www.symlaw.ac.in/" },
+  { "name": "The West Bengal National University of Juridical Sciences", "location": "Kolkata, India", "link": "https://www.nujs.edu/" },
+  { "name": "University of Pennsylvania", "location": "Philadelphia, PA, USA", "link": "https://www.law.upenn.edu/" },
+  { "name": "University of Edinburgh", "location": "Edinburgh, Scotland, UK", "link": "https://www.law.ed.ac.uk/" },
+  { "name": "University of Michigan Law School", "location": "Ann Arbor, MI, USA", "link": "https://www.law.umich.edu/" },
+  { "name": "University of California, Los Angeles", "location": "Los Angeles, CA, USA", "link": "https://law.ucla.edu/" },
+  { "name": "University of Virginia", "location": "Charlottesville, VA, USA", "link": "https://www.law.virginia.edu/" },
+  { "name": "National Taiwan University", "location": "Taipei, Taiwan", "link": "https://www.law.ntu.edu.tw/" },
+  { "name": "University of Cape Town", "location": "Cape Town, South Africa", "link": "https://www.law.uct.ac.za/" },
+  { "name": "Seoul National University", "location": "Seoul, South Korea", "link": "https://law.snu.ac.kr/" },
+  { "name": "University of Hong Kong Law School", "location": "Hong Kong", "link": "https://www.law.hku.hk/" },
+  { "name": "University of Bristol", "location": "Bristol, UK", "link": "https://www.bristol.ac.uk/law/" },
+  { "name": "University of Auckland", "location": "Auckland, New Zealand", "link": "https://www.law.auckland.ac.nz/" },
+  { "name": "University of Queensland", "location": "Brisbane, Australia", "link": "https://law.uq.edu.au/" },
+  { "name": "University of Leeds", "location": "Leeds, UK", "link": "https://www.law.leeds.ac.uk/" },
+  { "name": "University of Frankfurt", "location": "Frankfurt, Germany", "link": "https://www.jura.uni-frankfurt.de/" },
+  { "name": "University of Munich", "location": "Munich, Germany", "link": "https://www.jura.uni-muenchen.de/" },
+  { "name": "University of Helsinki", "location": "Helsinki, Finland", "link": "https://www.helsinki.fi/en/faculty-of-law" },
+  { "name": "University of Amsterdam", "location": "Amsterdam, Netherlands", "link": "https://www.uva.nl/en/education/master-s/master-s-in-law/master-s-in-law.html" },
+  { "name": "University of Geneva", "location": "Geneva, Switzerland", "link": "https://www.unige.ch/droit/en/" },
+  { "name": "University of Notre Dame", "location": "Notre Dame, IN, USA", "link": "https://law.nd.edu/" },
+  { "name": "University of Wisconsin-Madison", "location": "Madison, WI, USA", "link": "https://law.wisc.edu/" },
+  { "name": "University of California, Irvine", "location": "Irvine, CA, USA", "link": "https://www.law.uci.edu/" },
+  { "name": "University of Mannheim", "location": "Mannheim, Germany", "link": "https://www.jura.uni-mannheim.de/" }      ],
+      Medicine: [
+        { name: 'Harvard Medical School', location: 'Boston, MA, USA', link: 'https://hms.harvard.edu/' },
+  { name: 'Johns Hopkins University School of Medicine', location: 'Baltimore, MD, USA', link: 'https://www.hopkinsmedicine.org/' },
+  { name: 'NYU Grossman School of Medicine', location: 'New York, NY, USA', link: 'https://med.nyu.edu/' },
+  { name: 'Perelman School of Medicine, University of Pennsylvania', location: 'Philadelphia, PA, USA', link: 'https://www.med.upenn.edu/' },
+  { name: 'Columbia University Vagelos College of Physicians and Surgeons', location: 'New York, NY, USA', link: 'https://www.cuimc.columbia.edu/' },
+  { name: 'Stanford University School of Medicine', location: 'Stanford, CA, USA', link: 'https://med.stanford.edu/' },
+  { name: 'David Geffen School of Medicine at UCLA', location: 'Los Angeles, CA, USA', link: 'https://medschool.ucla.edu/' },
+  { name: 'Mayo Clinic Alix School of Medicine', location: 'Rochester, MN, USA', link: 'https://college.mayo.edu/' },
+  { name: 'Washington University School of Medicine in St. Louis', location: 'St. Louis, MO, USA', link: 'https://wustl.edu/' },
+  { name: 'UCSF School of Medicine', location: 'San Francisco, CA, USA', link: 'https://medschool.ucsf.edu/' },
+  { name: 'Weill Cornell Medical College', location: 'New York, NY, USA', link: 'https://www.weill.cornell.edu/' },
+  { name: 'University of Pittsburgh School of Medicine', location: 'Pittsburgh, PA, USA', link: 'https://www.medschool.pitt.edu/' },
+  { name: 'Feinberg School of Medicine, Northwestern University', location: 'Chicago, IL, USA', link: 'https://www.feinberg.northwestern.edu/' },
+  { name: 'Yale School of Medicine', location: 'New Haven, CT, USA', link: 'https://medicine.yale.edu/' },
+  { name: 'Duke University School of Medicine', location: 'Durham, NC, USA', link: 'https://medschool.duke.edu/' },
+  { name: 'Vanderbilt University School of Medicine', location: 'Nashville, TN, USA', link: 'https://medschool.vanderbilt.edu/' },
+  { name: 'University of Chicago Pritzker School of Medicine', location: 'Chicago, IL, USA', link: 'https://pritzker.uchicago.edu/' },
+  { name: 'Icahn School of Medicine at Mount Sinai', location: 'New York, NY, USA', link: 'https://icahn.mssm.edu/' },
+  { name: 'University of Washington School of Medicine', location: 'Seattle, WA, USA', link: 'https://www.uwmedicine.org/' },
+  { name: 'University of Michigan Medical School', location: 'Ann Arbor, MI, USA', link: 'https://medicine.umich.edu/' },
+  { name: 'UC San Diego School of Medicine', location: 'San Diego, CA, USA', link: 'https://medschool.ucsd.edu/' },
+  { name: 'All India Institute of Medical Sciences (AIIMS)', location: 'New Delhi, India', link: 'https://www.aiims.edu/' },
+  { name: 'University of Cambridge School of Clinical Medicine', location: 'Cambridge, UK', link: 'https://www.medschl.cam.ac.uk/' },
+  { name: 'Oxford University Medical School', location: 'Oxford, UK', link: 'https://www.medsci.ox.ac.uk/' },
+  { name: 'Imperial College London – Faculty of Medicine', location: 'London, UK', link: 'https://www.imperial.ac.uk/medicine/' },
+  { name: 'University College London Medical School', location: 'London, UK', link: 'https://www.ucl.ac.uk/medical-school/' },
+  { name: 'University of Edinburgh Medical School', location: 'Edinburgh, UK', link: 'https://www.ed.ac.uk/medicine-vet-medicine/edinburgh-medical-school' },
+  { name: 'King’s College London GKT School of Medical Education', location: 'London, UK', link: 'https://www.kcl.ac.uk/gkt-school-of-medical-education' },
+  { name: 'Karolinska Institute', location: 'Stockholm, Sweden', link: 'https://ki.se/en' },
+  { name: 'University of Toronto Faculty of Medicine', location: 'Toronto, Canada', link: 'https://www.medicine.utoronto.ca/' },
+  { name: 'McGill University Faculty of Medicine and Health Sciences', location: 'Montreal, Canada', link: 'https://www.mcgill.ca/medicine/' },
+  { name: 'University of British Columbia Faculty of Medicine', location: 'Vancouver, Canada', link: 'https://www.med.ubc.ca/' },
+  { name: 'University of Melbourne Medical School', location: 'Melbourne, Australia', link: 'https://mdhs.unimelb.edu.au/' },
+  { name: 'University of Sydney Medical School', location: 'Sydney, Australia', link: 'https://www.sydney.edu.au/medicine-health/' },
+  { name: 'Monash University Faculty of Medicine', location: 'Melbourne, Australia', link: 'https://www.monash.edu/medicine' },
+  { name: 'University of Queensland Faculty of Medicine', location: 'Brisbane, Australia', link: 'https://medicine.uq.edu.au/' },
+  { name: 'University of Hong Kong Li Ka Shing Faculty of Medicine', location: 'Hong Kong, SAR', link: 'https://www.med.hku.hk/' },
+  { name: 'National University of Singapore Yong Loo Lin School of Medicine', location: 'Singapore', link: 'https://medicine.nus.edu.sg/' },
+  { name: 'Tsinghua University School of Medicine', location: 'Beijing, China', link: 'https://www.tsinghua.edu.cn/en/' },
+  { name: 'Peking University Health Science Center', location: 'Beijing, China', link: 'https://www.pkuhsc.edu.cn/' },
+  { name: 'University of Tokyo Faculty of Medicine', location: 'Tokyo, Japan', link: 'https://www.m.u-tokyo.ac.jp/en/' },
+  { name: 'Kyoto University Graduate School of Medicine', location: 'Kyoto, Japan', link: 'https://www.med.kyoto-u.ac.jp/en/' },
+  { name: 'Seoul National University College of Medicine', location: 'Seoul, South Korea', link: 'https://medicine.snu.ac.kr/en/' },
+  { name: 'University of São Paulo Faculty of Medicine', location: 'São Paulo, Brazil', link: 'https://www.fm.usp.br/en/' },
+  { name: 'University of Cape Town Faculty of Health Sciences', location: 'Cape Town, South Africa', link: 'https://www.health.uct.ac.za/' },
+  { name: 'Universidad Nacional Autónoma de México (UNAM)', location: 'Mexico City, Mexico', link: 'https://www.facmed.unam.mx/' },
+  { name: 'Heidelberg University Faculty of Medicine', location: 'Heidelberg, Germany', link: 'https://www.medizinische-fakultaet-hd.uni-heidelberg.de/en' },
+  { name: 'Charité – Universitätsmedizin Berlin', location: 'Berlin, Germany', link: 'https://www.charite.de/en/' },
+  { name: 'University of Amsterdam Faculty of Medicine (AMC)', location: 'Amsterdam, Netherlands', link: 'https://www.amc.nl/web/home.htm' },
+  { name: 'Leiden University Medical Center', location: 'Leiden, Netherlands', link: 'https://www.lumc.nl/en/' }
+      ],
+      Business: [
+        { name: 'Harvard Business School', location: 'Boston, MA, USA', link: 'https://www.hbs.edu/' },
+  { name: 'Stanford Graduate School of Business', location: 'Stanford, CA, USA', link: 'https://www.gsb.stanford.edu/' },
+  { name: 'Wharton School of the University of Pennsylvania', location: 'Philadelphia, PA, USA', link: 'https://www.wharton.upenn.edu/' },
+  { name: 'London Business School', location: 'London, UK', link: 'https://www.london.edu/' },
+  { name: 'INSEAD', location: 'Fontainebleau, France', link: 'https://www.insead.edu/' },
+  { name: 'MIT Sloan School of Management', location: 'Cambridge, MA, USA', link: 'https://mitsloan.mit.edu/' },
+  { name: 'University of Chicago Booth School of Business', location: 'Chicago, IL, USA', link: 'https://www.chicagobooth.edu/' },
+  { name: 'Columbia Business School', location: 'New York, NY, USA', link: 'https://www.gsb.columbia.edu/' },
+  { name: 'IESE Business School', location: 'Barcelona, Spain', link: 'https://www.iese.edu/' },
+  { name: 'IE Business School', location: 'Madrid, Spain', link: 'https://www.ie.edu/business-school/' },
+  { name: 'Indian Institute of Management Ahmedabad', location: 'Ahmedabad, India', link: 'https://www.iima.ac.in/' },
+  { name: 'Indian Institute of Management Bangalore', location: 'Bangalore, India', link: 'https://www.iimb.ac.in/' },
+  { name: 'Indian Institute of Management Calcutta', location: 'Kolkata, India', link: 'https://www.iimcal.ac.in/' },
+  { name: 'XLRI - Xavier School of Management', location: 'Jamshedpur, India', link: 'https://www.xlri.ac.in/' },
+  { name: 'Indian School of Business', location: 'Hyderabad, India', link: 'https://www.isb.edu/' },
+  { name: 'HEC Paris', location: 'Paris, France', link: 'https://www.hec.edu/' },
+  { name: 'University of California, Berkeley - Haas School of Business', location: 'Berkeley, CA, USA', link: 'https://haas.berkeley.edu/' },
+  { name: 'ESSEC Business School', location: 'Cergy, France', link: 'https://www.essec.edu/en/' },
+  { name: 'University of Virginia Darden School of Business', location: 'Charlottesville, VA, USA', link: 'https://www.darden.virginia.edu/' },
+  { name: 'University of Michigan Ross School of Business', location: 'Ann Arbor, MI, USA', link: 'https://michiganross.umich.edu/' },
+  { name: 'Università Bocconi', location: 'Milan, Italy', link: 'https://www.unibocconi.eu/' },
+  { name: 'Rotman School of Management', location: 'Toronto, Canada', link: 'https://www.rotman.utoronto.ca/' },
+  { name: 'EADA Business School Barcelona', location: 'Barcelona, Spain', link: 'https://www.eada.edu/en/' },
+  { name: 'Universität St. Gallen (HSG)', location: 'St. Gallen, Switzerland', link: 'https://www.unisg.ch/en' },
+  { name: 'Universität Mannheim Business School', location: 'Mannheim, Germany', link: 'https://www.bwl.uni-mannheim.de/en/' },
+  { name: 'Asian Institute of Management', location: 'Manila, Philippines', link: 'https://www.aim.edu/' },
+  { name: 'UCLA Anderson School of Management', location: 'Los Angeles, CA, USA', link: 'https://www.anderson.ucla.edu/' },
+  { name: 'Imperial College Business School', location: 'London, UK', link: 'https://www.imperial.ac.uk/business-school/' },
+  { name: 'University of Oxford - Saïd Business School', location: 'Oxford, UK', link: 'https://www.sbs.ox.ac.uk/' },
+  { name: 'London School of Economics and Political Science (LSE)', location: 'London, UK', link: 'https://www.lse.ac.uk/' },
+  { name: 'University of Melbourne - Melbourne Business School', location: 'Melbourne, Australia', link: 'https://www.mbs.edu/' },
+  { name: 'University of Sydney Business School', location: 'Sydney, Australia', link: 'https://www.business.unsw.edu.au/' },
+  { name: 'University of Cape Town Graduate School of Business', location: 'Cape Town, South Africa', link: 'https://www.gsb.uct.ac.za/' },
+  { name: 'Universidade de São Paulo - USP Business School', location: 'São Paulo, Brazil', link: 'https://www.fgv.br/en' },
+  { name: 'Fudan University School of Management', location: 'Shanghai, China', link: 'https://www.fdsm.fudan.edu.cn/en/' },
+  { name: 'National University of Singapore Business School', location: 'Singapore', link: 'https://www.nus.edu.sg/' },
+  { name: 'Northwestern University – Kellogg School of Management', location: 'Evanston, IL, USA', link: 'https://www.kellogg.northwestern.edu/' },
+  { name: 'Yale School of Management', location: 'New Haven, CT, USA', link: 'https://som.yale.edu/' },
+  { name: 'Duke University – Fuqua School of Business', location: 'Durham, NC, USA', link: 'https://www.fuqua.duke.edu/' },
+  { name: 'Dartmouth College – Tuck School of Business', location: 'Hanover, NH, USA', link: 'https://www.tuck.dartmouth.edu/' },
+  { name: 'NYU – Stern School of Business', location: 'New York, NY, USA', link: 'https://www.stern.nyu.edu/' },
+  { name: 'Cornell University – SC Johnson College of Business', location: 'Ithaca, NY, USA', link: 'https://www.johnson.cornell.edu/' },
+  { name: 'USC – Marshall School of Business', location: 'Los Angeles, CA, USA', link: 'https://www.marshall.usc.edu/' },
+  { name: 'Carnegie Mellon – Tepper School of Business', location: 'Pittsburgh, PA, USA', link: 'https://www.cmu.edu/tepper/' },
+  { name: 'University of Cambridge – Judge Business School', location: 'Cambridge, UK', link: 'https://www.jbs.cam.ac.uk/' },
+  { name: 'Esade Business School', location: 'Barcelona, Spain', link: 'https://www.esade.edu/' },
+  { name: 'SDA Bocconi School of Management', location: 'Milan, Italy', link: 'https://www.sdabocconi.it/' },
+  { name: 'University of Manchester – Alliance Manchester Business School', location: 'Manchester, UK', link: 'https://www.alliancembs.manchester.ac.uk/' },
+  { name: 'Peking University – Guanghua School of Management', location: 'Beijing, China', link: 'https://en.gsm.pku.edu.cn/' }
+      ],
+      Engineering: [
+        { name: 'Massachusetts Institute of Technology (MIT)', location: 'Cambridge, MA, USA', link: 'https://web.mit.edu/' },
+  { name: 'Stanford University', location: 'Stanford, CA, USA', link: 'https://www.stanford.edu/' },
+  { name: 'Harvard University', location: 'Cambridge, MA, USA', link: 'https://www.harvard.edu/' },
+  { name: 'University of Oxford', location: 'Oxford, UK', link: 'https://www.ox.ac.uk/' },
+  { name: 'California Institute of Technology (Caltech)', location: 'Pasadena, CA, USA', link: 'https://www.caltech.edu/' },
+  { name: 'University of Cambridge', location: 'Cambridge, UK', link: 'https://www.cam.ac.uk/' },
+  { name: 'University of California, Berkeley', location: 'Berkeley, CA, USA', link: 'https://www.berkeley.edu/' },
+  { name: 'ETH Zurich – Swiss Federal Institute of Technology', location: 'Zurich, Switzerland', link: 'https://ethz.ch/en.html' },
+  { name: 'Imperial College London', location: 'London, UK', link: 'https://www.imperial.ac.uk/' },
+  { name: 'Princeton University', location: 'Princeton, NJ, USA', link: 'https://www.princeton.edu/' },
+  { name: 'National University of Singapore (NUS)', location: 'Singapore', link: 'https://www.nus.edu.sg/' },
+  { name: 'Tsinghua University', location: 'Beijing, China', link: 'https://www.tsinghua.edu.cn/en/' },
+  { name: 'Georgia Institute of Technology', location: 'Atlanta, GA, USA', link: 'https://www.gatech.edu/' },
+  { name: 'Delft University of Technology', location: 'Delft, Netherlands', link: 'https://www.tudelft.nl/en/' },
+  { name: 'Technical University of Munich (TUM)', location: 'Munich, Germany', link: 'https://www.tum.de/en/' },
+  { name: 'University of Toronto', location: 'Toronto, Canada', link: 'https://www.utoronto.ca/' },
+  { name: 'The University of Tokyo', location: 'Tokyo, Japan', link: 'https://www.u-tokyo.ac.jp/en/' },
+  { name: 'KAIST - Korea Advanced Institute of Science and Technology', location: 'Daejeon, South Korea', link: 'https://www.kaist.ac.kr/en/' },
+  { name: 'Nanyang Technological University (NTU)', location: 'Singapore', link: 'https://www.ntu.edu.sg/' },
+  { name: 'Carnegie Mellon University', location: 'Pittsburgh, PA, USA', link: 'https://www.cmu.edu/' },
+  { name: 'Seoul National University', location: 'Seoul, South Korea', link: 'https://en.snu.ac.kr/' },
+  { name: 'McGill University', location: 'Montreal, Canada', link: 'https://www.mcgill.ca/' },
+  { name: 'University of Melbourne', location: 'Melbourne, Australia', link: 'https://www.unimelb.edu.au/' },
+  { name: 'University of New South Wales (UNSW Sydney)', location: 'Sydney, Australia', link: 'https://www.unsw.edu.au/' },
+  { name: 'Politecnico di Milano', location: 'Milan, Italy', link: 'https://www.polimi.it/en/' },
+  { name: 'École Polytechnique Fédérale de Lausanne (EPFL)', location: 'Lausanne, Switzerland', link: 'https://www.epfl.ch/en/' },
+  { name: 'Peking University', location: 'Beijing, China', link: 'https://www.pku.edu.cn/en/' },
+  { name: 'University of Illinois Urbana-Champaign', location: 'Champaign, IL, USA', link: 'https://illinois.edu/' },
+  { name: 'University of California, San Diego (UCSD)', location: 'San Diego, CA, USA', link: 'https://www.ucsd.edu/' },
+  { name: 'University of California, Los Angeles (UCLA)', location: 'Los Angeles, CA, USA', link: 'https://www.ucla.edu/' },
+  { name: 'University of Michigan', location: 'Ann Arbor, MI, USA', link: 'https://umich.edu/' },
+  { name: 'University of California, San Francisco (UCSF)', location: 'San Francisco, CA, USA', link: 'https://www.ucsf.edu/' },
+  { name: 'University of Sydney', location: 'Sydney, Australia', link: 'https://www.sydney.edu.au/' },
+  { name: 'University of Queensland', location: 'Brisbane, Australia', link: 'https://www.uq.edu.au/' },
+  { name: 'University of British Columbia', location: 'Vancouver, Canada', link: 'https://www.ubc.ca/' },
+  { name: 'University of California, Irvine (UCI)', location: 'Irvine, CA, USA', link: 'https://www.uci.edu/' },
+  { name: 'University of Texas at Austin', location: 'Austin, TX, USA', link: 'https://www.utexas.edu/' },
+  { name: 'University of California, Santa Barbara (UCSB)', location: 'Santa Barbara, CA, USA', link: 'https://www.ucsb.edu/' },
+  { name: 'University of California, Davis (UC Davis)', location: 'Davis, CA, USA', link: 'https://www.ucdavis.edu/' },
+  { name: 'University of California, Santa Cruz (UCSC)', location: 'Santa Cruz, CA, USA', link: 'https://www.ucsc.edu/' },
+  { name: 'University of California, Riverside (UCR)', location: 'Riverside, CA, USA', link: 'https://www.ucr.edu/' },
+  { name: 'University of California, Merced (UC Merced)', location: 'Merced, CA, USA', link: 'https://www.ucmerced.edu/' },
+  { name: 'University of California, Santa Barbara (UCSB)', location: 'Santa Barbara, CA, USA', link: 'https://www.ucsb.edu/' },
+  { name: 'University of California, Berkeley (UC Berkeley)', location: 'Berkeley, CA, USA', link: 'https://www.berkeley.edu/' }
+      ],
+      Architecture: [
+       { name: 'California Polytechnic State University', location: 'San Luis Obispo, CA, USA', link: 'https://architecture.calpoly.edu/' },
+  { name: 'Columbia University', location: 'New York, NY, USA', link: 'https://www.arch.columbia.edu/' },
+  { name: 'Cornell University', location: 'Ithaca, NY, USA', link: 'https://aap.cornell.edu/architecture' },
+  { name: 'Delft University of Technology', location: 'Delft, Netherlands', link: 'https://www.tudelft.nl/en/architecture-and-the-built-environment/' },
+  { name: 'École Polytechnique Fédérale de Lausanne (EPFL)', location: 'Lausanne, Switzerland', link: 'https://www.epfl.ch/en/' },
+  { name: 'ETH Zurich – Swiss Federal Institute of Technology', location: 'Zurich, Switzerland', link: 'https://ethz.ch/en.html' },
+  { name: 'Georgia Institute of Technology', location: 'Atlanta, GA, USA', link: 'https://www.coa.gatech.edu/' },
+  { name: 'Harvard University', location: 'Cambridge, MA, USA', link: 'https://www.gsd.harvard.edu/' },
+  { name: 'IIT Roorkee', location: 'Roorkee, India', link: 'https://www.iitr.ac.in/' },
+  { name: 'KU Leuven', location: 'Leuven, Belgium', link: 'https://www.kuleuven.be/kuleuven/' },
+  { name: 'Manchester School of Architecture', location: 'Manchester, UK', link: 'https://www.msa.ac.uk/' },
+  { name: 'Massachusetts Institute of Technology (MIT)', location: 'Cambridge, MA, USA', link: 'https://architecture.mit.edu/' },
+  { name: 'Nanyang Technological University (NTU)', location: 'Singapore', link: 'https://www.ntu.edu.sg/' },
+  { name: 'National University of Singapore (NUS)', location: 'Singapore', link: 'https://www.arch.nus.edu.sg/' },
+  { name: 'Peking University', location: 'Beijing, China', link: 'https://www.pku.edu.cn/en/' },
+  { name: 'Politecnico di Milano', location: 'Milan, Italy', link: 'https://www.polimi.it/en/' },
+  { name: 'Politecnico di Torino', location: 'Turin, Italy', link: 'https://www.polito.it/en' },
+  { name: 'Pontificia Universidad Católica de Chile', location: 'Santiago, Chile', link: 'https://www.uc.cl/en/' },
+  { name: 'Princeton University', location: 'Princeton, NJ, USA', link: 'https://soa.princeton.edu/' },
+  { name: 'RMIT University', location: 'Melbourne, Australia', link: 'https://www.rmit.edu.au/' },
+  { name: 'Royal Danish Academy of Fine Arts', location: 'Copenhagen, Denmark', link: 'https://kadk.dk/en' },
+  { name: 'Royal Institute of Technology (KTH)', location: 'Stockholm, Sweden', link: 'https://www.kth.se/en' },
+  { name: 'Seoul National University', location: 'Seoul, South Korea', link: 'https://en.snu.ac.kr/' },
+  { name: 'Shanghai Jiao Tong University', location: 'Shanghai, China', link: 'https://www.sjtu.edu.cn/english/' },
+  { name: 'Stanford University', location: 'Stanford, CA, USA', link: 'https://www.stanford.edu/' },
+  { name: 'Technical University of Berlin (TU Berlin)', location: 'Berlin, Germany', link: 'https://www.tu.berlin/en/' },
+  { name: 'Technical University of Munich (TUM)', location: 'Munich, Germany', link: 'https://www.tum.de/en/' },
+  { name: 'The Hong Kong Polytechnic University', location: 'Hong Kong SAR', link: 'https://www.polyu.edu.hk/ar/' },
+  { name: 'The University of Hong Kong (HKU)', location: 'Hong Kong SAR', link: 'https://www.arch.hku.hk/' },
+  { name: 'The University of New South Wales (UNSW)', location: 'Sydney, Australia', link: 'https://www.unsw.edu.au/' },
+  { name: 'The University of Sheffield', location: 'Sheffield, UK', link: 'https://www.sheffield.ac.uk/' },
+  { name: 'The University of Sydney', location: 'Sydney, Australia', link: 'https://www.sydney.edu.au/' },
+  { name: 'The University of Tokyo', location: 'Tokyo, Japan', link: 'https://www.t.u-tokyo.ac.jp/english/' },
+  { name: 'Tongji University', location: 'Shanghai, China', link: 'https://www.tongji.edu.cn/english/' },
+  { name: 'Tsinghua University', location: 'Beijing, China', link: 'http://www.arch.tsinghua.edu.cn/en/' },
+  { name: 'Universidad Politécnica de Madrid', location: 'Madrid, Spain', link: 'https://www.upm.es/internacional/' },
+  { name: 'Universidade de São Paulo (USP)', location: 'São Paulo, Brazil', link: 'https://www.usp.br/en/' },
+  { name: 'Universitat Politècnica de Catalunya (UPC)', location: 'Barcelona, Spain', link: 'https://www.upc.edu/en' },
+  { name: 'University College London (UCL)', location: 'London, UK', link: 'https://www.ucl.ac.uk/architecture/' },
+  { name: 'University of Auckland', location: 'Auckland, New Zealand', link: 'https://www.auckland.ac.nz/en/architecture.html' },
+  { name: 'University of British Columbia (UBC)', location: 'Vancouver, Canada', link: 'https://www.ubc.ca/' },
+  { name: 'University of California, Berkeley', location: 'Berkeley, CA, USA', link: 'https://ced.berkeley.edu/' },
+  { name: 'University of California, Los Angeles (UCLA)', location: 'Los Angeles, CA, USA', link: 'https://www.aud.ucla.edu/' },
+  { name: 'University of Cambridge', location: 'Cambridge, UK', link: 'https://www.arct.cam.ac.uk/' },
+  { name: 'University of Melbourne', location: 'Melbourne, Australia', link: 'https://msd.unimelb.edu.au/' },
+  { name: 'University of Michigan Ann Arbor', location: 'Ann Arbor, MI, USA', link: 'https://umich.edu/' },
+  { name: 'University of Pennsylvania', location: 'Philadelphia, PA, USA', link: 'https://www.upenn.edu/' },
+  { name: 'University of Sydney', location: 'Sydney, Australia', link: 'https://sydney.edu.au/architecture' },
+  { name: 'University of the Arts London', location: 'London, UK', link: 'https://www.arts.ac.uk/' }
+      ],
+      Design: [
+{ "name": "Rhode Island School of Design (RISD)", "location": "Providence, RI, USA", "link": "https://www.risd.edu/" },
+  { "name": "Parsons School of Design", "location": "New York, NY, USA", "link": "https://www.newschool.edu/parsons/" },
+  { "name": "Royal College of Art", "location": "London, UK", "link": "https://www.rca.ac.uk/" },
+  { "name": "Central Saint Martins", "location": "London, UK", "link": "https://www.arts.ac.uk/colleges/central-saint-martins" },
+  { "name": "Pratt Institute", "location": "Brooklyn, NY, USA", "link": "https://www.pratt.edu/" },
+  { "name": "Savannah College of Art and Design (SCAD)", "location": "Savannah, GA, USA", "link": "https://www.scad.edu/" },
+  { "name": "University of the Arts London (UAL)", "location": "London, UK", "link": "https://www.arts.ac.uk/" },
+  { "name": "École Nationale Supérieure des Beaux-Arts", "location": "Paris, France", "link": "https://www.beauxartsparis.fr/" },
+  { "name": "Aalto University", "location": "Helsinki, Finland", "link": "https://www.aalto.fi/en" },
+  { "name": "Bauhaus-Universität Weimar", "location": "Weimar, Germany", "link": "https://www.uni-weimar.de/en/" },
+  { "name": "University of California, Los Angeles (UCLA) School of the Arts and Architecture", "location": "Los Angeles, CA, USA", "link": "https://www.aud.ucla.edu/" },
+  { "name": "Massachusetts Institute of Technology (MIT) Media Lab", "location": "Cambridge, MA, USA", "link": "https://www.media.mit.edu/" },
+  { "name": "Hong Kong Polytechnic University School of Design", "location": "Hong Kong", "link": "https://www.sd.polyu.edu.hk/" },
+  { "name": "The New School - Parsons Paris", "location": "Paris, France", "link": "https://www.parsons.paris/" },
+  { "name": "Tama Art University", "location": "Tokyo, Japan", "link": "https://www.tama.ac.jp/en/" },
+  { "name": "Columbia University Graduate School of Architecture, Planning and Preservation", "location": "New York, NY, USA", "link": "https://www.arch.columbia.edu/" },
+  { "name": "Stanford University Department of Art & Art History", "location": "Stanford, CA, USA", "link": "https://arts.stanford.edu/" },
+  { "name": "University of Melbourne - Melbourne School of Design", "location": "Melbourne, Australia", "link": "https://msd.unimelb.edu.au/" },
+  { "name": "California Institute of the Arts (CalArts)", "location": "Valencia, CA, USA", "link": "https://www.calarts.edu/" },
+  { "name": "School of the Art Institute of Chicago (SAIC)", "location": "Chicago, IL, USA", "link": "https://www.saic.edu/" },
+  { "name": "Design Academy Eindhoven", "location": "Eindhoven, Netherlands", "link": "https://www.designacademy.nl/" },
+  { "name": "Politecnico di Milano School of Design", "location": "Milan, Italy", "link": "https://www.polidesign.net/" },
+  { "name": "Hong Kong Design Institute", "location": "Hong Kong", "link": "https://www.hkdi.edu.hk/" },
+  { "name": "Royal Danish Academy of Fine Arts", "location": "Copenhagen, Denmark", "link": "https://kadk.dk/en" },
+  { "name": "University of Tokyo - Graduate School of Interdisciplinary Information Studies", "location": "Tokyo, Japan", "link": "https://www.u-tokyo.ac.jp/en/" },
+  { "name": "University of Applied Arts Vienna", "location": "Vienna, Austria", "link": "https://www.dieangewandte.at/" },
+  { "name": "Kyoto Institute of Technology", "location": "Kyoto, Japan", "link": "https://www.kit.ac.jp/" },
+  { "name": "The Glasgow School of Art", "location": "Glasgow, UK", "link": "https://www.gsa.ac.uk/" },
+  { "name": "School of Visual Arts (SVA)", "location": "New York, NY, USA", "link": "https://www.sva.edu/" },
+  { "name": "École de design Nantes Atlantique", "location": "Nantes, France", "link": "https://www.lecolededesign.com/en/" },
+  { "name": "Copenhagen Institute of Interaction Design", "location": "Copenhagen, Denmark", "link": "https://ciid.dk/" },
+  { "name": "Kunsthochschule Berlin-Weissensee", "location": "Berlin, Germany", "link": "https://www.kh-berlin.de/en" },
+  { "name": "Cooper Union for the Advancement of Science and Art", "location": "New York, NY, USA", "link": "https://www.cooper.edu/" },
+  { "name": "Bezalel Academy of Arts and Design", "location": "Jerusalem, Israel", "link": "https://www.bezalel.ac.il/" },
+  { "name": "RMIT University - School of Design", "location": "Melbourne, Australia", "link": "https://www.rmit.edu.au/" },
+  { "name": "CentraleSupélec", "location": "Paris, France", "link": "https://www.centralesupelec.fr/en" },
+  { "name": "ETH Zurich - Department of Architecture", "location": "Zurich, Switzerland", "link": "https://www.arch.ethz.ch/en" },
+  { "name": "The University of Sydney - School of Architecture, Design and Planning", "location": "Sydney, Australia", "link": "https://www.sydney.edu.au/" },
+  { "name": "Shanghai Jiao Tong University - School of Design", "location": "Shanghai, China", "link": "https://www.sjtu.edu.cn/" },
+  { "name": "Fashion Institute of Technology (FIT)", "location": "New York, NY, USA", "link": "https://www.fitnyc.edu/" },
+  { "name": "Berlin University of the Arts", "location": "Berlin, Germany", "link": "https://www.udk-berlin.de/en/" },
+  { "name": "Institute of Design, Illinois Institute of Technology", "location": "Chicago, IL, USA", "link": "https://www.id.iit.edu/" },
+  { "name": "University of Pennsylvania - Weitzman School of Design", "location": "Philadelphia, PA, USA", "link": "https://www.design.upenn.edu/" },
+  { "name": "Academy of Fine Arts Vienna", "location": "Vienna, Austria", "link": "https://www.akbild.ac.at/en" },
+  { "name": "University of Oxford - Department of Architecture", "location": "Oxford, UK", "link": "https://www.arch.ox.ac.uk/" },
+  { "name": "Fachhochschule Potsdam", "location": "Potsdam, Germany", "link": "https://www.fh-potsdam.de/en" },
+  { "name": "Kunstakademie Düsseldorf", "location": "Düsseldorf, Germany", "link": "https://www.kunstakademie-duesseldorf.de/en/" }
+      ]
+    };
+
+    function filterByField(field) {
+      const grid = document.getElementById('university-grid');
+      const noResultsMessage = document.getElementById('no-results-message');
+      grid.innerHTML = '';
+      let hasResults = false;
+
+      universities[field].forEach(university => {
+        const card = document.createElement('div');
+        card.classList.add('university-card', 'bg-white', 'rounded-2xl', 'shadow-md', 'p-4', 'border', 'border-beige-200');
+        card.style.borderColor = '#e9e1d2';
+        card.innerHTML = `
+          <h3 class="text-xl font-bold text-beige-900" style="color: #a67c52;">
+            <a href="${university.link}" target="_blank">${university.name}</a>
+          </h3>
+          <p class="text-gray-500">${university.location}</p>
+        `;
+        grid.appendChild(card);
+        hasResults = true;
+      });
+
+      if (hasResults) {
+        noResultsMessage.classList.add('hidden');
+      } else {
+        noResultsMessage.classList.remove('hidden');
+      }
+    }
+
+    const searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase();
+      const grid = document.getElementById('university-grid');
+      const noResultsMessage = document.getElementById('no-results-message');
+      grid.innerHTML = '';
+      let hasResults = false;
+
+      Object.keys(universities).forEach(field => {
+        universities[field].forEach(university => {
+          if (university.name.toLowerCase().includes(query) || university.location.toLowerCase().includes(query)) {
+            const card = document.createElement('div');
+            card.classList.add('university-card', 'bg-white', 'rounded-2xl', 'shadow-md', 'p-4', 'border', 'border-beige-200');
+            card.style.borderColor = '#e9e1d2';
+            card.innerHTML = `
+              <h3 class="text-xl font-bold text-beige-900" style="color: #a67c52;">
+                <a href="${university.link}" target="_blank">${university.name}</a>
+              </h3>
+              <p class="text-gray-500">${university.location}</p>
+            `;
+            grid.appendChild(card);
+            hasResults = true;
+          }
+        });
+      });
+
+      if (hasResults) {
+        noResultsMessage.classList.add('hidden');
+      } else {
+        noResultsMessage.classList.remove('hidden');
+      }
+    });
+  </script>
+</body>
+</html>
